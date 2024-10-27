@@ -1,9 +1,7 @@
 /* eslint-disable react/prop-types */
 
 import styles from "./ProductsTable.module.css";
-
-import editIcon from "../images/edit.png";
-import deleteIcon from "../images/trash.png";
+import Product from "../components/Product";
 
 const ProductsTable = ({ data, isError, isLoading }) => {
   if (isLoading) {
@@ -29,16 +27,7 @@ const ProductsTable = ({ data, isError, isLoading }) => {
         <tbody>
           {data &&
             data.map((product) => (
-              <tr key={product.id}>
-                <td>{product.name}</td>
-                <td>{product.quantity}</td>
-                <td>{product.price}هزار تومان</td>
-                <td>{product.id}</td>
-                <td>
-                  <img src={editIcon} alt="icon" />
-                  <img src={deleteIcon} alt="icon" />
-                </td>
-              </tr>
+              <Product key={product.id} product={product} />
             ))}
         </tbody>
       </table>

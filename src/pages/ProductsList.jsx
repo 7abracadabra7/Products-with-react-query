@@ -7,9 +7,9 @@ import SearchBox from "../components/SearchBox";
 import { useFetchProducts } from "../services/query";
 
 const ProductsList = () => {
-
   //======================= Modal ========================
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [pageNumber, setPageNumber] = useState(1);
 
   const openModal = () => {
     setModalIsOpen(true);
@@ -18,11 +18,15 @@ const ProductsList = () => {
   const closeModal = () => {
     setModalIsOpen(false);
   };
-  const { data, isLoading, isError, refetch ,isPending,error} = useFetchProducts();
+  //======================= Fetching Data ===================
+  const { data, isLoading, isError, refetch, isPending, error } =
+    useFetchProducts(pageNumber);
   if (isPending) return <p>Loading...</p>;
 
   if (error) return <p>Something went wrong!</p>;
-  console.log(data)
+  console.log(data.data);
+
+  //==========================================================
   return (
     <div className={styles.main}>
       <div className={styles.container}>
@@ -43,9 +47,25 @@ const ProductsList = () => {
           refetch={refetch}
         />
 
-        <ProductsTable data={data} isLoading={isLoading} isError={isError} />
+        <ProductsTable
+          data={data.data}
+          isLoading={isLoading}
+          isError={isError}
+        />
       </div>
-      {/* <button onClick={setPage((page) => page + 1)}>+</button> */}
+      <button
+        className={pageNumber == 1 ? styles.disableBtn : styles.button}
+        onClick={() => setPageNumber((page) => page - 1)}
+      >
+        قبل
+      </button>
+      <span>{pageNumber}</span>
+      <button
+        className={pageNumber == data.totalPages ? styles.disableBtn : styles.button}
+        onClick={() => setPageNumber((page) => page + 1)}
+      >
+        بعد
+      </button>
     </div>
   );
 };
