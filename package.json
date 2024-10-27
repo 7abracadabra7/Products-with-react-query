@@ -10,10 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.59.16",
     "axios": "^1.7.7",
     "git": "^0.1.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-hook-form": "^7.53.1",
+    "react-modal": "^3.16.1",
     "react-router-dom": "^6.27.0"
   },
   "devDependencies": {

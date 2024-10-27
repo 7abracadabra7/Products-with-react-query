@@ -1,0 +1,17 @@
+.modalContent {
+    background: #ffffff; /* Background color of the modal */
+    border-radius: 30px; /* Rounded corners */
+    padding: 30px 36px; /* Padding inside the modal */
+    overflow: hidden;
+    /* Add more styles as needed */
+  }
+  
+  .modalOverlay {
+    background-color: #f7f8f8;
+    width: 460px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -5%);
+  }
+  

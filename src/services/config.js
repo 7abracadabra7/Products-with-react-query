@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getCookie } from "../utils/cookie";
 const api = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
   headers: {
@@ -7,8 +8,21 @@ const api = axios.create({
 });
 
 api.interceptors.response.use(
-  (response) => response.data.data,
-  (error) => Promise.reject(error)
+  (response) => {
+  console.log("api response", response);
+
+    return response;
+  }
+  // (error) => Promise.reject(error)
 );
+
+api.interceptors.request.use((request) => {
+  const token = getCookie("token");
+  if (token) {
+    request.headers["Authorization"] = `Bearer ${token}`;
+  }
+  console.log("api request", request);
+  return request;
+});
 
 export { api };

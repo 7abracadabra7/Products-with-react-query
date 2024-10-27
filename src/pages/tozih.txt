@@ -1,0 +1,98 @@
+import React, { useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { api } from '../services/config'; // Adjust the path as necessary
+
+const ProductsList = () => {
+  const queryClient = useQueryClient();
+
+  // Fetching products using useQuery
+  const fetchProducts = async () => {
+    const response = await api.get('products');
+    return response.data; // Return the data
+  };
+
+  const { data: products, error, isLoading } = useQuery(['products'], fetchProducts);
+
+  // Adding a new product using useMutation
+  const addProduct = async (newProduct) => {
+    const response = await api.post('products', newProduct);
+    return response.data; // Return the created product
+  };
+
+  const mutation = useMutation(addProduct, {
+    onSuccess: () => {
+      // Invalidate and refetch products after a successful mutation
+      queryClient.invalidateQueries(['products']);
+    },
+    onError: (error) => {
+      console.error("Error adding product:", error);
+    }
+  });
+
+  const [newProduct, setNewProduct] = useState({ name: '', quantity: '', price: '' });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewProduct((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    mutation.mutate(newProduct); // Call the mutation to add the product
+    setNewProduct({ name: '', quantity: '', price: '' }); // Reset the form
+  };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  return (
+    <div>
+      <h1>Product List</h1>
+      <ul>
+        {products.map((product) => (
+          <li key={product.id}>{product.name} - {product.price}</li>
+        ))}
+      </ul>
+
+      <h2>Add New Product</h2>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="name"
+          placeholder="Product Name"
+          value={newProduct.name}
+          onChange={handleInputChange}
+          required
+        />
+        <input
+          type="number"
+          name="quantity"
+          placeholder="Quantity"
+          value={newProduct.quantity}
+          onChange={handleInputChange}
+          required
+        />
+        <input
+          type="number"
+          name="price"
+          placeholder="Price"
+          value={newProduct.price}
+          onChange={handleInputChange}
+          required
+        />
+        <button type="submit">Add Product</button>
+      </form>
+
+      {mutation.isLoading && <div>Adding product...</div>}
+      {mutation.isError && <div>Error adding product: {mutation.error.message}</div>}
+      {mutation.isSuccess && <div>Product added!</div>}
+    </div>
+  );
+};
+
+export default ProductsList;
