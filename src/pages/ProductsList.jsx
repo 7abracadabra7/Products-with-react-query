@@ -3,24 +3,39 @@ import styles from "./ProductsList.module.css";
 import ProductsTable from "../components/ProductsTable";
 import { useState } from "react";
 import AddModal from "../components/AddModal";
+import EditModal from "../components/EditModal";
+// import DeleteModal from "../components/DeleteModal";
+import { useContext } from "react";
 import SearchBox from "../components/SearchBox";
 import { useFetchProducts } from "../services/query";
+import { ModalContext } from "../providers/ContextProvider";
 
 const ProductsList = () => {
   //======================= Modal ========================
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const { toggleModal } = useContext(ModalContext);
   const [pageNumber, setPageNumber] = useState(1);
+  const [searchItem, setSearchItem] = useState("");
 
-  const openModal = () => {
-    setModalIsOpen(true);
-  };
+  // const [modalStates, setModalStates] = useState({
+  //   addModal: false,
+  //   editModal: false,
+  //   deleteModal: false,
+  // });
 
-  const closeModal = () => {
-    setModalIsOpen(false);
-  };
+  // const toggleModal = (modal) => {
+  //   setModalStates((prev) => ({ ...prev, [modal]: !prev[modal] }));
+  // };
+
+
+  //====================================================
+
   //======================= Fetching Data ===================
-  const { data, isLoading, isError, refetch, isPending, error } =
-    useFetchProducts(pageNumber);
+
+  const { data, isLoading, isError, isPending, error } = useFetchProducts(
+    pageNumber,
+    searchItem
+  );
+
   if (isPending) return <p>Loading...</p>;
 
   if (error) return <p>Something went wrong!</p>;
@@ -30,22 +45,22 @@ const ProductsList = () => {
   return (
     <div className={styles.main}>
       <div className={styles.container}>
-        <SearchBox />
+        <SearchBox setSearchItem={setSearchItem} searchItem={searchItem} />
         <div className={styles.productManagement}>
           <div className={styles.title}>
             <img src={setting3} alt="icon" />
             <h2>مدیریت کالا</h2>
           </div>
-          <button onClick={openModal} className={styles.addProductBtn}>
+          <button
+            onClick={() => toggleModal("addModal")}
+            className={styles.addProductBtn}
+          >
             افزودن محصول
           </button>
         </div>
-        <AddModal
-          modalIsOpen={modalIsOpen}
-          setModalIsOpen={setModalIsOpen}
-          closeModal={closeModal}
-          refetch={refetch}
-        />
+        <AddModal  />
+         <EditModal/>
+        {/*<DeleteModal/> */}
 
         <ProductsTable
           data={data.data}
@@ -61,7 +76,9 @@ const ProductsList = () => {
       </button>
       <span>{pageNumber}</span>
       <button
-        className={pageNumber == data.totalPages ? styles.disableBtn : styles.button}
+        className={
+          pageNumber == data.totalPages ? styles.disableBtn : styles.button
+        }
         onClick={() => setPageNumber((page) => page + 1)}
       >
         بعد

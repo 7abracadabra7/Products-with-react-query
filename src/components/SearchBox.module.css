@@ -8,6 +8,7 @@
   height: 68px;
   border-radius: 2rem;
   border: 1px solid #e4e4e4;
+  padding-right: 50px;
 }
 
 .searchBox input::placeholder {

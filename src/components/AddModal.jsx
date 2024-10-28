@@ -3,9 +3,12 @@ import { useProduct } from "../services/mutations";
 import { useForm } from "react-hook-form";
 import Modal from "react-modal";
 import styles from "./AddModal.module.css";
+import { useContext } from "react";
+import { ModalContext } from "../providers/ContextProvider";
 
-const AddModal = ({ modalIsOpen, closeModal, setModalIsOpen, refetch }) => {
+const AddModal = () => {
   const { register, handleSubmit } = useForm();
+  const { modalStates, toggleModal } = useContext(ModalContext);
 
   //====================== Mutate Product =============================
 
@@ -13,27 +16,23 @@ const AddModal = ({ modalIsOpen, closeModal, setModalIsOpen, refetch }) => {
 
   const onSubmit = (product) => {
     console.log("product", product);
-    setModalIsOpen(false);
+    toggleModal("addModal");
     mutate(product, {
       onSuccess: (data) => console.log(data),
       onError: (error) => console.log(error),
     });
-    refetch();
   };
   return (
     <div>
       <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
+        isOpen={modalStates.addModal}
+        onRequestClose={() => toggleModal("addModal")}
         className={styles.modalContent}
         overlayClassName={styles.modalOverlay}
         contentLabel="Create New Product"
       >
         <h2>ایجاد محصول جدید</h2>
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-          <div>
-            <h1>محصول جدید</h1>
-          </div>
           <div>
             <label>نام کالا</label>
             <input {...register("name")} type="text" placeholder="نام کالا" />
@@ -48,10 +47,16 @@ const AddModal = ({ modalIsOpen, closeModal, setModalIsOpen, refetch }) => {
 
             <input {...register("price")} type="number" placeholder="قیمت" />
           </div>
-          <button type="button" onClick={closeModal}>
+          <button className={styles.submitBtn} type="submit">
+            ایجاد
+          </button>
+          <button
+            className={styles.cancelBtn}
+            type="button"
+            onClick={() => toggleModal("addModal")}
+          >
             انصراف
           </button>
-          <button type="submit">ایجاد</button>
         </form>
       </Modal>
     </div>
