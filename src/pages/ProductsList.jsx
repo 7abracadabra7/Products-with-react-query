@@ -16,8 +16,6 @@ const ProductsList = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [searchItem, setSearchItem] = useState("");
 
-  //====================================================
-
   //======================= Fetching Data ===================
 
   const { data, isLoading, isError, isPending, error } = useFetchProducts(

@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { useProduct } from "../services/mutations";
 import { useForm } from "react-hook-form";
 import Modal from "react-modal";
@@ -7,8 +6,16 @@ import { useContext } from "react";
 import { ModalContext } from "../providers/ContextProvider";
 
 const AddModal = () => {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const { modalStates, toggleModal } = useContext(ModalContext);
+  // const [placeholderText, setPlaceholderText] = useState({name: "نام کالا" , quantity: "تعداد ", price: "قیمت"
+
+  // });
+  // const isError = placeholderText === "متن ارور"; // بررسی اینکه آیا متن ارور است یا خیر
 
   //====================== Mutate Product =============================
 
@@ -16,11 +23,11 @@ const AddModal = () => {
 
   const onSubmit = (product) => {
     console.log("product", product);
-    toggleModal("addModal");
     mutate(product, {
       onSuccess: (data) => console.log(data),
       onError: (error) => console.log(error),
     });
+    toggleModal("addModal");
   };
   return (
     <div>
@@ -35,7 +42,11 @@ const AddModal = () => {
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <div>
             <label>نام کالا</label>
-            <input {...register("name")} type="text" placeholder="نام کالا" />
+            <input
+              {...register("name", { required: "این فیلد الزامی است" })}
+              type="text"
+              placeholder={errors.name ? errors.name.message : "نام کالا"}
+            />
             <label>تعداد موجودی </label>
 
             <input
@@ -57,6 +68,9 @@ const AddModal = () => {
           >
             انصراف
           </button>
+          {errors.name && (
+            <span className={styles.error}>{errors.name.message}</span>
+          )}
         </form>
       </Modal>
     </div>

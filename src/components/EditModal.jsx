@@ -1,9 +1,9 @@
 import { useEditProduct } from "../services/mutations";
 import { useForm } from "react-hook-form";
-import Modal from "react-modal";
-import styles from "./AddModal.module.css";
 import { useContext, useEffect } from "react";
 import { ModalContext } from "../providers/ContextProvider";
+import Modal from "react-modal";
+import styles from "./AddModal.module.css";
 
 const EditModal = () => {
   const { register, handleSubmit, reset } = useForm();
