@@ -5,9 +5,6 @@ import searchIcon from "../images/search.png";
 import { useRef, useEffect } from "react";
 
 const SearchBox = ({ setSearchItem, searchItem }) => {
-
-
-
   const inputRef = useRef(null);
   useEffect(() => {
     if (inputRef.current) {
@@ -29,8 +26,6 @@ const SearchBox = ({ setSearchItem, searchItem }) => {
         onChange={searchHandler}
         ref={inputRef}
         value={searchItem}
-        onFocus={() => console.log("Input focused")}
-        onBlur={() => console.log("Input blurred")}
       />
       <div className={styles.userInfo}>
         <img src={profileImg} alt="profile" />

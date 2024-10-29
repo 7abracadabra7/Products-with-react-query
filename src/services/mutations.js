@@ -39,11 +39,14 @@ const useDeleteProduct = () => {
   return useMutation({ mutationFn, onSuccess });
 };
 
-export { useRegister, useLogin, useProduct, useDeleteProduct };
-
 const useEditProduct = () => {
   const queryClient = useQueryClient();
-  const mutationFn = (data) => {
-    api.p;
-  };
+  const mutationFn = async (data) => await api.put(`products/${data.id}`, data);
+
+  const onSuccess = async () =>
+    await queryClient.invalidateQueries({ queryKey: ["products"] });
+
+  return useMutation({ mutationFn, onSuccess });
 };
+
+export { useRegister, useLogin, useProduct, useDeleteProduct, useEditProduct };

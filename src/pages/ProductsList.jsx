@@ -16,16 +16,6 @@ const ProductsList = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [searchItem, setSearchItem] = useState("");
 
-  // const [modalStates, setModalStates] = useState({
-  //   addModal: false,
-  //   editModal: false,
-  //   deleteModal: false,
-  // });
-
-  // const toggleModal = (modal) => {
-  //   setModalStates((prev) => ({ ...prev, [modal]: !prev[modal] }));
-  // };
-
   //====================================================
 
   //======================= Fetching Data ===================

@@ -11,8 +11,8 @@ const DeleteModal = () => {
   const { mutate } = useDeleteProduct();
 
   const deleteHandler = () => {
-    const id = selectedProduct;
-    console.log("delete modal id", id);
+    const id = selectedProduct.id;
+    console.log("delete modal id:", id);
     const data = {
       ids: [id],
     };

@@ -6,39 +6,26 @@ import { useContext } from "react";
 import { ModalContext } from "../providers/ContextProvider";
 
 function ProductCard({ product }) {
-  // const { mutate } = useDeleteProduct();
-  const { toggleModal, setSelectedProduct, selectedProduct } =
-    useContext(ModalContext);
+  const { toggleModal, setSelectedProduct } = useContext(ModalContext);
 
-  // const deleteHandler = (id) => {
-  //   const data = {
-  //     ids: [id],
-  //   };
-  //   console.log(data);
+  const deleteHandler = (id, name, quantity, price) => {
+    const addSelectedProduct = async () =>
+      await setSelectedProduct({ id, name, quantity, price });
 
-  //   mutate(
-  //     { data },
-  //     {
-  //       onSuccess: (data) => {
-  //         console.log(data);
-  //       },
-  //       onError: (error) => {
-  //         console.log(error);
-  //       },
-  //     }
-  //   );
-  // };
-
-  const deleteHandler = (id) => {
-    const addSelectedProduct = async () => 
-      await setSelectedProduct(id);
-      
     console.log("Delete icon clicked");
     console.log("clicked on:", id);
     addSelectedProduct();
-    // setSelectedProduct(id);
-    console.log(selectedProduct);
     toggleModal("deleteModal");
+  };
+
+  const editHandler = (id, name, quantity, price) => {
+    const addSelectedProduct = async () =>
+      await setSelectedProduct({ id, name, quantity, price });
+
+    console.log("Edit icon clicked");
+    console.log("clicked on:", id);
+    addSelectedProduct();
+    toggleModal("editModal");
   };
 
   return (
@@ -51,11 +38,25 @@ function ProductCard({ product }) {
         <img
           src={editIcon}
           alt="icon"
-          onClick={() => toggleModal("editModal")}
+          onClick={() =>
+            editHandler(
+              product.id,
+              product.name,
+              product.quantity,
+              product.price
+            )
+          }
         />
         <img
           src={deleteIcon}
-          onClick={() => deleteHandler(product.id)}
+          onClick={() =>
+            deleteHandler(
+              product.id,
+              product.name,
+              product.quantity,
+              product.price
+            )
+          }
           alt="icon"
         />
       </td>

@@ -1,26 +1,40 @@
-import { useProduct } from "../services/mutations";
+import { useEditProduct } from "../services/mutations";
 import { useForm } from "react-hook-form";
 import Modal from "react-modal";
 import styles from "./AddModal.module.css";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { ModalContext } from "../providers/ContextProvider";
 
 const EditModal = () => {
-  const { register, handleSubmit } = useForm();
-  const { modalStates, toggleModal } = useContext(ModalContext);
+  const { register, handleSubmit, reset } = useForm();
+  const { modalStates, toggleModal, selectedProduct } =
+    useContext(ModalContext);
 
   //====================== Mutate Product =============================
 
-  const { mutate } = useProduct();
+  const { mutate } = useEditProduct();
 
   const onSubmit = (product) => {
-    console.log("product", product);
-    toggleModal("editModal");
-    mutate(product, {
-      onSuccess: (data) => console.log(data),
+    const id = selectedProduct.id;
+    const data = { id: id, ...product };
+    console.log("editedData:", data);
+    mutate(data, {
+      onSuccess: (data) => console.log("new data", data),
       onError: (error) => console.log(error),
     });
+    toggleModal("editModal");
   };
+
+  useEffect(() => {
+    if (modalStates.editModal) {
+      reset({
+        name: selectedProduct.name,
+        quantity: selectedProduct.quantity,
+        price: selectedProduct.price,
+      });
+    }
+  }, [modalStates.editModal, reset]);
+
   return (
     <div>
       <Modal
@@ -30,7 +44,7 @@ const EditModal = () => {
         overlayClassName={styles.modalOverlay}
         contentLabel="Edit Product"
       >
-        <h2>  ویرایش اطلاعات </h2>
+        <h2> ویرایش اطلاعات </h2>
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <div>
             <label>نام کالا</label>
@@ -47,7 +61,7 @@ const EditModal = () => {
             <input {...register("price")} type="number" placeholder="قیمت" />
           </div>
           <button className={styles.submitBtn} type="submit">
-            ثبت اطلاعات جدید 
+            ثبت اطلاعات جدید
           </button>
           <button
             className={styles.cancelBtn}
@@ -56,7 +70,6 @@ const EditModal = () => {
           >
             انصراف
           </button>
-         
         </form>
       </Modal>
     </div>

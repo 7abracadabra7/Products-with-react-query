@@ -11,7 +11,6 @@ const ProductsTable = ({ data, isError, isLoading }) => {
     return <div>Error fetching data</div>;
   }
 
-  console.log("table", data);
   return (
     <div className={styles.container}>
       <table className={styles.productTable}>
