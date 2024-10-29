@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 
 import styles from "./ProductsTable.module.css";
-import Product from "../components/Product";
+import ProductCard from "./Product";
 
 const ProductsTable = ({ data, isError, isLoading }) => {
   if (isLoading) {
@@ -27,7 +27,7 @@ const ProductsTable = ({ data, isError, isLoading }) => {
         <tbody>
           {data &&
             data.map((product) => (
-              <Product key={product.id} product={product} />
+              <ProductCard key={product.id} product={product} />
             ))}
         </tbody>
       </table>

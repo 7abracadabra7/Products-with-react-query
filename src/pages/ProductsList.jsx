@@ -4,7 +4,7 @@ import ProductsTable from "../components/ProductsTable";
 import { useState } from "react";
 import AddModal from "../components/AddModal";
 import EditModal from "../components/EditModal";
-// import DeleteModal from "../components/DeleteModal";
+import DeleteModal from "../components/DeleteModal";
 import { useContext } from "react";
 import SearchBox from "../components/SearchBox";
 import { useFetchProducts } from "../services/query";
@@ -12,7 +12,7 @@ import { ModalContext } from "../providers/ContextProvider";
 
 const ProductsList = () => {
   //======================= Modal ========================
-  const { toggleModal } = useContext(ModalContext);
+  const { toggleModal, modalStates } = useContext(ModalContext);
   const [pageNumber, setPageNumber] = useState(1);
   const [searchItem, setSearchItem] = useState("");
 
@@ -25,7 +25,6 @@ const ProductsList = () => {
   // const toggleModal = (modal) => {
   //   setModalStates((prev) => ({ ...prev, [modal]: !prev[modal] }));
   // };
-
 
   //====================================================
 
@@ -58,9 +57,9 @@ const ProductsList = () => {
             افزودن محصول
           </button>
         </div>
-        <AddModal  />
-         <EditModal/>
-        {/*<DeleteModal/> */}
+        {modalStates.addModal && <AddModal />}
+        {modalStates.editModal && <EditModal />}
+        {modalStates.deleteModal && <DeleteModal />}
 
         <ProductsTable
           data={data.data}

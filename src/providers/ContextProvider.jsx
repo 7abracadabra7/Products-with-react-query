@@ -12,8 +12,18 @@ const ContextProvider = ({ children }) => {
     setModalStates((prev) => ({ ...prev, [modal]: !prev[modal] }));
   };
 
+  const [selectedProduct, setSelectedProduct] = useState("");
+
   return (
-    <ModalContext.Provider value={{ modalStates, setModalStates, toggleModal }}>
+    <ModalContext.Provider
+      value={{
+        modalStates,
+        setModalStates,
+        toggleModal,
+        setSelectedProduct,
+        selectedProduct,
+      }}
+    >
       {children}
     </ModalContext.Provider>
   );
