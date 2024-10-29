@@ -12,7 +12,7 @@ const EditModal = () => {
     reset,
     formState: { errors },
   } = useForm();
-  const { modalStates, toggleModal, selectedProduct } =
+  const { modalStates, toggleModal, selectedProduct, setSelectedProduct } =
     useContext(ModalContext);
 
   //====================== Mutate Product =============================
@@ -27,6 +27,7 @@ const EditModal = () => {
       onSuccess: (data) => console.log("new data", data),
       onError: (error) => console.log(error),
     });
+
     toggleModal("editModal");
   };
 
