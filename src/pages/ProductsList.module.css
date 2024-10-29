@@ -3,7 +3,6 @@
   text-align: center;
 }
 
-
 .productManagement {
   margin-top: 40px;
   display: flex;
@@ -33,15 +32,15 @@
   border: none;
 }
 
-.button{
+.button {
   padding: 3px 15px;
   margin: 5px;
 }
 
 .disableBtn {
   padding: 3px 15px;
-  cursor:not-allowed;
+  cursor: not-allowed;
   opacity: 0.6;
   margin: 5px;
-
+  pointer-events: none;
 }

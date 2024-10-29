@@ -6,7 +6,12 @@ import Modal from "react-modal";
 import styles from "./AddModal.module.css";
 
 const EditModal = () => {
-  const { register, handleSubmit, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
   const { modalStates, toggleModal, selectedProduct } =
     useContext(ModalContext);
 
@@ -48,17 +53,33 @@ const EditModal = () => {
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <div>
             <label>نام کالا</label>
-            <input {...register("name")} type="text" placeholder="نام کالا" />
+            <input
+              {...register("name", { required: "این فیلد الزامی است" })}
+              type="text"
+              id="name"
+              placeholder={errors.name ? errors.name.message : "نام کالا"}
+              className={errors.name ? styles.error : styles.normal}
+            />
             <label>تعداد موجودی </label>
 
             <input
-              {...register("quantity")}
+              id="quantity"
+              {...register("quantity", {
+                required: "لطفا تعداد را وارد کنید ",
+              })}
               type="number"
-              placeholder="تعداد"
+              placeholder={errors.quantity ? errors.quantity.message : "تعداد "}
+              className={errors.quantity ? styles.error : styles.normal}
             />
             <label> قیمت</label>
 
-            <input {...register("price")} type="number" placeholder="قیمت" />
+            <input
+              id="price"
+              {...register("price", { required: "لطفا قیمت را وارد کنید" })}
+              type="number"
+              placeholder={errors.price ? errors.price.message : "قیمت"}
+              className={errors.price ? styles.error : styles.normal}
+            />
           </div>
           <button className={styles.submitBtn} type="submit">
             ثبت اطلاعات جدید

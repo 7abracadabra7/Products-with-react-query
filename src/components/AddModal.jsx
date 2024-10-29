@@ -12,12 +12,6 @@ const AddModal = () => {
     formState: { errors },
   } = useForm();
   const { modalStates, toggleModal } = useContext(ModalContext);
-  const [placeholderText, setPlaceholderText] = useState({
-    name: "نام کالا",
-    quantity: "تعداد ",
-    price: "قیمت",
-  });
-  const isError = placeholderText === "این فیلد الزامی است";
 
   //====================== Mutate Product =============================
 
@@ -46,27 +40,29 @@ const AddModal = () => {
             <label>نام کالا</label>
             <input
               id="name"
-              {...register("name", { required: "این فیلد الزامی است" })}
-              type="text"
               placeholder={errors.name ? errors.name.message : "نام کالا"}
               className={errors.name ? styles.error : styles.normal}
+              {...register("name", { required: "این فیلد الزامی است" })}
+              type="text"
             />
             <label>تعداد موجودی </label>
 
             <input
               id="quantity"
-              {...register("quantity", { required: true })}
+              {...register("quantity", {
+                required: "لطفا تعداد را وارد کنید ",
+              })}
               type="number"
-              placeholder={errors.name ? errors.name.message : "تعداد "}
+              placeholder={errors.name ? errors.quantity.message : "تعداد "}
               className={errors.quantity ? styles.error : styles.normal}
             />
             <label> قیمت</label>
 
             <input
               id="price"
-              {...register("price", { required: true })}
+              {...register("price", { required: "لطفا قیمت را وارد کنید" })}
               type="number"
-              placeholder={errors.name ? errors.name.message : "قیمت"}
+              placeholder={errors.name ? errors.price.message : "قیمت"}
               className={errors.price ? styles.error : styles.normal}
             />
           </div>

@@ -26,7 +26,7 @@ function ProductCard({ product: { id, name, quantity, price } }) {
     <tr key={id}>
       <td>{name}</td>
       <td>{quantity}</td>
-      <td>{price}هزار تومان</td>
+      <td>{price} هزار تومان</td>
       <td>{id}</td>
       <td>
         <img
