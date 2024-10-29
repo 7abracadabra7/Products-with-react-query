@@ -4,18 +4,21 @@ import logo from "../images/Union.png";
 import { useForm } from "react-hook-form";
 import { useLogin } from "../services/mutations";
 import { setCookie } from "../utils/cookie";
+import { useState } from "react";
 
 const LoginForm = () => {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const { mutate } = useLogin();
   const navigate = useNavigate();
+  const [loginError, setLoginError] = useState("");
 
   const onSubmit = (data) => {
     console.log("login data", data);
-    const { username, password } = data;
-
-    if (!username || !password)
-      return alert("User Name and Password is Necessary");
+    // const { username, password } = data;
 
     mutate(data, {
       onSuccess: (data) => {
@@ -23,7 +26,14 @@ const LoginForm = () => {
         setCookie("token", data.data?.token);
         navigate("/");
       },
-      onError: (error) => console.log(error.response.data.message),
+      onError: (error) => {
+        console.log(error.response.data.message);
+        if (error.response.data.message == "Invalid credentials") {
+          setLoginError("اطلاعات وارد شده نادرست است");
+        } else {
+          setLoginError("خطایی رخ داده است");
+        }
+      },
     });
   };
   return (
@@ -37,21 +47,30 @@ const LoginForm = () => {
           </div>
           <div className={styles.inputContainer}>
             <input
-              {...register("username")}
+              {...register("username", { required: "این فیلد الزامی است" })}
               type="text"
-              placeholder="نام کاربری"
+              id="username"
+              placeholder={
+                errors.username ? errors.username.message : "نام کاربری"
+              }
+              className={errors.username ? styles.error : styles.normal}
             />
             <input
-              {...register("password")}
+              id="password"
+              {...register("password", { required: "این فیلد الزامی است" })}
               type="password"
-              placeholder="رمز عبور"
+              placeholder={
+                errors.password ? errors.password.message : "رمز عبور"
+              }
+              className={errors.password ? styles.error : styles.normal}
             />
           </div>
           <button type="submit" className={styles.formButton}>
             ورود
           </button>
+          {loginError && <p className={styles.error}>{loginError}</p>}
           <div className={styles.rightAlign}>
-            <Link className={styles.link} to="/login">
+            <Link className={styles.link} to="/registration">
               ایجاد حساب کاربری!
             </Link>
           </div>

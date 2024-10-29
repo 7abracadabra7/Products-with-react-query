@@ -85,3 +85,16 @@
   text-align: right;
   margin-top: 16px;
 }
+
+input.normal::placeholder {
+  color: gray;
+}
+
+input.error::placeholder {
+  color: red;
+}
+
+p.error {
+  color: red;
+  margin-top: 15px;
+}

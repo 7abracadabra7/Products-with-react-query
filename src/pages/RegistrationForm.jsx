@@ -8,16 +8,17 @@ const RegistrationForm = () => {
   const navigate = useNavigate();
 
   const { mutate } = useRegister();
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm();
+  const password = watch("password");
 
   const onSubmit = (data) => {
     console.log("registered data", data);
     const { username, password, confirmPassword } = data;
-
-    if (!username || !password)
-      return alert("User Name and Password is Necessary");
-    if (password !== confirmPassword)
-      return alert("Passwords aren't The Same!");
 
     mutate(
       { username, password },
@@ -41,20 +42,37 @@ const RegistrationForm = () => {
           </div>
           <div className={styles.inputContainer}>
             <input
-              {...register("username")}
+              {...register("username", { required: "این فیلد الزامی است" })}
               type="text"
-              placeholder="نام کاربری"
+              id="username"
+              placeholder={
+                errors.username ? errors.username.message : "نام کاربری"
+              }
+              className={errors.username ? styles.error : styles.normal}
             />
             <input
-              {...register("password")}
+              id="password"
+              {...register("password", { required: "این فیلد الزامی است" })}
               type="password"
-              placeholder="رمز عبور"
+              placeholder={
+                errors.password ? errors.password.message : "رمز عبور"
+              }
+              className={errors.password ? styles.error : styles.normal}
             />
             <input
-              {...register("confirmPassword")}
+              id="confirmPassword"
+              {...register("confirmPassword", {
+                required: "رمز عبور را تکرار کنید",
+                validate: (value) =>
+                  value === password || "رمز عبور و تکرار آن باید شبیه باشند",
+              })}
               type="password"
               placeholder="تکرار رمز عبور"
+              className={errors.confirmPassword ? styles.error : styles.normal}
             />
+            {errors.confirmPassword && (
+              <p className={styles.error}>{errors.confirmPassword.message}</p>
+            )}
           </div>
           <button type="submit" className={styles.formButton}>
             ثبت نام
