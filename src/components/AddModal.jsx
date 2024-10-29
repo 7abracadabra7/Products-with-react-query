@@ -2,7 +2,7 @@ import { useProduct } from "../services/mutations";
 import { useForm } from "react-hook-form";
 import Modal from "react-modal";
 import styles from "./AddModal.module.css";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ModalContext } from "../providers/ContextProvider";
 
 const AddModal = () => {
@@ -12,10 +12,12 @@ const AddModal = () => {
     formState: { errors },
   } = useForm();
   const { modalStates, toggleModal } = useContext(ModalContext);
-  // const [placeholderText, setPlaceholderText] = useState({name: "نام کالا" , quantity: "تعداد ", price: "قیمت"
-
-  // });
-  // const isError = placeholderText === "متن ارور"; // بررسی اینکه آیا متن ارور است یا خیر
+  const [placeholderText, setPlaceholderText] = useState({
+    name: "نام کالا",
+    quantity: "تعداد ",
+    price: "قیمت",
+  });
+  const isError = placeholderText === "این فیلد الزامی است";
 
   //====================== Mutate Product =============================
 
@@ -43,20 +45,30 @@ const AddModal = () => {
           <div>
             <label>نام کالا</label>
             <input
+              id="name"
               {...register("name", { required: "این فیلد الزامی است" })}
               type="text"
               placeholder={errors.name ? errors.name.message : "نام کالا"}
+              className={errors.name ? styles.error : styles.normal}
             />
             <label>تعداد موجودی </label>
 
             <input
-              {...register("quantity")}
+              id="quantity"
+              {...register("quantity", { required: true })}
               type="number"
-              placeholder="تعداد"
+              placeholder={errors.name ? errors.name.message : "تعداد "}
+              className={errors.quantity ? styles.error : styles.normal}
             />
             <label> قیمت</label>
 
-            <input {...register("price")} type="number" placeholder="قیمت" />
+            <input
+              id="price"
+              {...register("price", { required: true })}
+              type="number"
+              placeholder={errors.name ? errors.name.message : "قیمت"}
+              className={errors.price ? styles.error : styles.normal}
+            />
           </div>
           <button className={styles.submitBtn} type="submit">
             ایجاد
@@ -68,9 +80,9 @@ const AddModal = () => {
           >
             انصراف
           </button>
-          {errors.name && (
+          {/* {errors.name && (
             <span className={styles.error}>{errors.name.message}</span>
-          )}
+          )} */}
         </form>
       </Modal>
     </div>

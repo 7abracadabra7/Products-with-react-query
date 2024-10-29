@@ -60,6 +60,10 @@
   margin-left: 20px;
 }
 
-.error {
+input.normal::placeholder {
+  color: gray;
+}
+
+input.error::placeholder {
   color: red;
 }
